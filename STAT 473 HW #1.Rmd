@@ -1,0 +1,40 @@
+---
+title: 'STAT 473 HW #1'
+output: html_document
+date: "2024-02-28"
+author: "Bushra Abukarn" 
+---
+```{r}
+#Read the data 
+heart <- read.csv("C:/Users/bushr/OneDrive/Desktop/heart.csv")
+#Split features 
+input <- heart[, c("BMI", "Smoker", "MentHlth", "Age", "Education", "Income")] 
+outcome <- heart$HeartDiseaseorAttack
+#Split into testing & training data
+set.seed(123)
+heart_split <- rsample::initial_split(heart, prop = 0.8, strata = outcome)
+heart_split
+#Training data 
+training_data <- rsample::training(heart_split)
+#Testing data 
+testing_data <- rsample::testing(heart_split)
+#Decision Tree Classifier in training data 
+DecisionTreeClassifier <- rpart(HeartDiseaseorAttack ~ BMI + Smoker + MentHlth + Age + Education + Income, 
+                                data=training_data, method = "class",  
+                                cp=0.0001)
+rpart.plot(DecisionTreeClassifier)
+#Confusion matrix 
+predicted <- predict(DecisionTreeClassifier, newdata = testing_data, type = "class")
+confusionMatrix(data = as.factor(predicted), reference = as.factor(testing_data$HeartDiseaseorAttack), 
+                mode = "prec_recall")
+#Lift result
+lift_result <- data.frame(truth = testing_data$HeartDiseaseorAttack)
+lift_result$yes <- predict(DecisionTreeClassifier, testing_data, type = "prob")["Yes"]
+lift_result$no <- predict(DecisionTreeClassifier, testing_data, type = "prob")["No"]
+lift_result$predicted <- predict(DecisionTreeClassifier, testing_data)
+#ROC Curve
+roc_curve(lift_result, truth, yes) %>% autoplot()
+#Lift Curve 
+lift_curve(lift_result, truth, yes) %>% autoplot()
+```
+
