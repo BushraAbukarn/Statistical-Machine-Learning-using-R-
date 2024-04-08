@@ -111,9 +111,9 @@ gain_curve(lift_result, truth, yes) %>% autoplot()
 roc_curve(lift_result, truth, yes) %>% autoplot() 
 lift_curve(lift_result, truth, yes) %>% autoplot()
 
-#4.3.1 Model - Logistic Regression Using Support Vector Machine 
-svmfit <- svm(Personal_Loan ~ ., data = train_data, kernel = "linear")
-print(svmfit)
+#4.3.1 Model - Logistic Regression 
+LR <- glm(Personal_Loan ~ ., data=train_data, family="binomial")
+summary(LR)
 #4.3.2 Prediction - Logistic Regression
 predicted <- predict(LR, test_data, type = "response")
 pred_class <- as.factor(ifelse(predicted < 0.5, "Yes", "No"))
