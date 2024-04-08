@@ -146,4 +146,21 @@ lift_curve(lift_result, truth, yes) %>% autoplot()
 #4.4.4 Decision Tree
 vip(tree)
 rpart.plot(tree)
+
+#4.5.1 Model - Support Vector Machine 
+svmfit <- svm(Personal_Loan ~ ., data = train_data, kernel = "linear")
+print(svmfit)
+#4.5.2 Prediction - Support Vector Machine 
+predicted <- predict(svmfit,test_data)
+confusionMatrix(predicted, test_data$Personal_Loan, mode = "prec_recall")
+prob <- predict(svmfit, test_data, probability=TRUE)
+prob <- data.frame(attr(prob, "probabilities"))
+lift_result <- data.frame(truth = test_data$Personal_Loan)
+lift_result$yes <- prob$Yes
+lift_result$no <- prob$No
+lift_result$predicted <- predict(svmfit, test_data)
+#4.5.3 Visualization - Support Vector Machine 
+gain_curve(lift_result, truth, yes) %>% autoplot()
+roc_curve(lift_result, truth, yes) %>% autoplot()
+lift_curve(lift_result, truth, yes) %>% autoplot()
 ```
