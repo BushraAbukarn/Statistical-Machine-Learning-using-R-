@@ -58,7 +58,7 @@ print(svmModel)
 smote_result <- SMOTE(train_data[,-7],train_data[,7])
 train_data <- smote_result$data
 #5.3Predict using the test data to extract the confusion matrix
-predicted <- predict(svmfit,test_data)
+predicted <- predict(svmModel,test_data)
 confusionMatrix(data = as.factor(predicted), reference = as.factor(test_data$HeartDiseaseorAttack), 
                 mode = "prec_recall")
 
