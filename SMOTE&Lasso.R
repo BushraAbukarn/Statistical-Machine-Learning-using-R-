@@ -1,4 +1,9 @@
 ```{r}
+heart <- heart %>% mutate( 
+  HeartDiseaseorAttack = factor(HeartDiseaseorAttack, levels = c(0,1), labels = c("No", "Yes")), 
+  Smoker = factor(Smoker, levels=c(0,1), labels=c("No", "Yes")), 
+  Sex = factor(Sex, levels=c(0,1), labels=c("Male", "Female"))
+  
 #1.Split the features 
 input <- heart[, c("BMI", "Smoker", "MentHlth", "Age", "Education", "Income")]
 outcome <- heart$HeartDiseaseorAttack
