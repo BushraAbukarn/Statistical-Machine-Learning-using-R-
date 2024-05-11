@@ -26,7 +26,7 @@ XGB <- boost_tree(
   mode = "classification",
   engine = "xgboost",
   mtry = NULL,
-  trees = 10,
+  trees = 200,
   min_n = NULL,
   tree_depth = 3,
   learn_rate = NULL,
